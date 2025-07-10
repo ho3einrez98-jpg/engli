@@ -1,0 +1,26 @@
+{
+  "name": "englifix-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/async": "^3.2.24",
+    "async": "^3.2.6",
+    "langdetect": "^0.2.1",
+    "openai": "^5.8.3",
+    "telegraf": "^4.16.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/langdetect": "^0.2.2"
+  }
+}
