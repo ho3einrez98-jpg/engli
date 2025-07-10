@@ -1,6 +1,6 @@
 import { CorrectionResponse } from "../interfaces";
-import { openaiClient } from "./openai-client";
 import { logger } from "./logger";
+import { openaiClient } from "./openai-client";
 
 export async function correctSentence(
 	sentence: string,
@@ -17,7 +17,7 @@ export async function correctSentence(
 						content:
 							"Correct the grammar and syntax of the input text. " +
 							"Output only the corrected text if changes are needed, " +
-							'or "No correction needed" if the text is correct. ' +
+							"or 'No correction needed' if the text is correct. " +
 							"Do not include reasoning, explanations, or extra text. " +
 							"For multi-sentence inputs, correct each sentence and return the full corrected text.",
 					},
@@ -27,14 +27,12 @@ export async function correctSentence(
 				temperature: 0.3,
 			});
 
-			// Check if response is valid
 			const content = response.choices[0]?.message.content?.trim();
 			if (content) {
 				const usage = response.usage;
 				logger.info(
 					`Input: ${sentence} | Response: ${content} | Tokens: prompt=${usage?.prompt_tokens}, completion=${usage?.completion_tokens}, total=${usage?.total_tokens}`
 				);
-				// Return corrected sentence only if different from input and not a "no correction" variant
 				if (
 					content.toLowerCase() !== sentence.toLowerCase() &&
 					![

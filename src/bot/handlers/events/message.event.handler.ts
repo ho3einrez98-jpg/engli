@@ -5,7 +5,7 @@ import { logger } from "../../utils/logger";
 import { messageQueue } from "../../utils/message-queue";
 
 export const messageEventHandler = async (ctx: Context<Update>) => {
-	if (!(ctx.message && "text" in ctx.message)) {
+	if (!ctx.message || !("text" in ctx.message)) {
 		await ctx.reply("❌ Please send a valid text message.");
 		return;
 	}
@@ -22,9 +22,12 @@ export const messageEventHandler = async (ctx: Context<Update>) => {
 
 	try {
 		// Detect language of the input text
-		const lang = detect(text)?.[0]?.lang;
+		const detection = detect(text);
+		const lang = detection && detection.length > 0 ? detection[0].lang : null;
 		if (lang !== "en") {
-			logger.info(`Non-English input ignored: ${text} | Detected language: ${lang}`);
+			logger.info(
+				`Non-English input ignored: ${text} | Detected language: ${lang || "unknown"}`
+			);
 			return;
 		}
 
@@ -34,8 +37,10 @@ export const messageEventHandler = async (ctx: Context<Update>) => {
 			logger.info(`Enqueued message: ${text} | Queue size: ${messageQueue.length()}`);
 		} else {
 			logger.warn(`Queue full or paused, dropping message: ${text}`);
+			await ctx.reply("⚠️ Bot is busy, please try again later.");
 		}
 	} catch (error) {
 		logger.error(`Language detection error for text '${text}': ${error}`);
+		await ctx.reply("❌ Error processing your message. Please try again.");
 	}
 };
