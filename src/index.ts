@@ -13,5 +13,15 @@ async function bootstrap() {
 
 bootstrap();
 
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+// ============================
+// Handle graceful shutdown
+// ============================
+
+process.once("SIGINT", () => {
+	logger.info("Received SIGINT, stopping bot...");
+	bot.stop("SIGINT");
+});
+process.once("SIGTERM", () => {
+	logger.info("Received SIGTERM, stopping bot...");
+	bot.stop("SIGTERM");
+});

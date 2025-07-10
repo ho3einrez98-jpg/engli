@@ -13,15 +13,10 @@ if (!TOKEN || TOKEN.includes("YOUR_TELEGRAM_BOT_TOKEN")) {
 const bot = new Telegraf<Context<Update>>(TOKEN);
 
 // ============================
-// Command Handlers
+// Register Handlers
 // ============================
 
 bot.command("start", startCommandHandler);
-
-// ============================
-// Message Handler
-// ============================
-
 bot.on("text", messageEventHandler);
 
 export { bot };
