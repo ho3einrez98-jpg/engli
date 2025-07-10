@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { OpenAI } from "openai";
 
 const NSCALE_API_KEY = process.env.NSCALE_API_KEY;

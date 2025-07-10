@@ -2,9 +2,9 @@
   "name": "englifix-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@types/async": "^3.2.24",
     "async": "^3.2.6",
+    "dotenv": "^17.2.0",
     "langdetect": "^0.2.1",
     "openai": "^5.8.3",
     "telegraf": "^4.16.3",
