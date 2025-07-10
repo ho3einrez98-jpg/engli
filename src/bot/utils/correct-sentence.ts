@@ -10,7 +10,7 @@ export async function correctSentence(
 	for (let attempt = 0; attempt <= retries; attempt++) {
 		try {
 			const response = await openaiClient.chat.completions.create({
-				model: "Qwen/Qwen2.5-Coder-32B-Instruct",
+				model: "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
 				messages: [
 					{
 						role: "system",
@@ -23,7 +23,7 @@ export async function correctSentence(
 					},
 					{ role: "user", content: sentence },
 				],
-				max_tokens: 750,
+				max_tokens: 2000,
 				temperature: 0.3,
 			});
 
