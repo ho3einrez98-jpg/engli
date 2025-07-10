@@ -14,6 +14,8 @@
   "type": "commonjs",
   "dependencies": {
     "@types/async": "^3.2.24",
+    "@types/langdetect": "^0.2.2",
+    "@types/node": "^22.16.2",
     "async": "^3.2.6",
     "dotenv": "^17.2.0",
     "franc": "^6.2.0",
@@ -23,8 +25,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "winston": "^3.17.0"
-  },
-  "devDependencies": {
-    "@types/langdetect": "^0.2.2"
   }
 }
