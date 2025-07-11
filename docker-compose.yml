@@ -2,7 +2,7 @@ version: "3.8"
 services:
   db:
     image: mysql:8.0
-    restart: always
+    restart: always # restart the container if it crashes
     environment:
       MYSQL_ROOT_PASSWORD: 1527349680
       MYSQL_DATABASE: englifix
@@ -13,9 +13,9 @@ services:
     volumes:
       - db_data:/var/lib/mysql
   bot:
-    build: .
+    build: . # build the bot from the current directory
     depends_on:
-      - db
+      - db # wait for the db service to be ready
     environment:
       DB_HOST: db
       DB_PORT: 3306
@@ -27,7 +27,7 @@ services:
       NSCALE_BASE_URL: https://inference.api.nscale.com/v1
       NSCALE_MODEL: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
     volumes:
-      - .:/app
+      - .:/app # mount the current directory to the /app directory in the container
     command: pnpm start
 volumes:
   db_data:
