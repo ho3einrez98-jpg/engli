@@ -1,7 +1,6 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
-import { AppDataSource } from "../../../db/data-source";
-import { User } from "../../../db/entities/User";
+import { userRepo } from "../../../db/repositories";
 
 export const unsubscribeCommandHandler = async (ctx: Context<Update>) => {
 	const userId = ctx.from?.id;
@@ -9,7 +8,6 @@ export const unsubscribeCommandHandler = async (ctx: Context<Update>) => {
 		await ctx.reply("❌ Unable to identify user.");
 		return;
 	}
-	const userRepo = AppDataSource.getRepository(User);
 	const user = await userRepo.findOne({ where: { telegramId: userId } });
 	if (!user || !user.isPremium) {
 		await ctx.reply("ℹ️ You are not a premium subscriber.");

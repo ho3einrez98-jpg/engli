@@ -1,7 +1,6 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
-import { AppDataSource } from "../../../db/data-source";
-import { User } from "../../../db/entities/User";
+import { userRepo } from "../../../db/repositories";
 
 export const subscribeCommandHandler = async (ctx: Context<Update>) => {
 	const userId = ctx.from?.id;
@@ -9,7 +8,6 @@ export const subscribeCommandHandler = async (ctx: Context<Update>) => {
 		await ctx.reply("❌ Unable to identify user.");
 		return;
 	}
-	const userRepo = AppDataSource.getRepository(User);
 	let user = await userRepo.findOne({ where: { telegramId: userId } });
 	if (!user) {
 		user = userRepo.create({ telegramId: userId, isPremium: true });
