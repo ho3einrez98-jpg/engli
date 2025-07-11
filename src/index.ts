@@ -4,6 +4,7 @@ import { logger } from "./bot/utils/logger";
 
 async function bootstrap() {
 	try {
+		
 		console.log("NODE_ENV", process.env.NODE_ENV);
 		console.log("TELEGRAM_BOT_TOKEN", process.env.TELEGRAM_BOT_TOKEN);
 		console.log("NSCALE_API_KEY", process.env.NSCALE_API_KEY);
