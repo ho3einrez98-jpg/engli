@@ -1,12 +1,14 @@
-import { env } from "process";
+import "dotenv/config";
 import { bot } from "./bot";
 import { logger } from "./bot/utils/logger";
 
 async function bootstrap() {
 	try {
-		logger.info("TELEGRAM_BOT_TOKEN", env.TELEGRAM_BOT_TOKEN);
-		logger.info("NSCALE_API_KEY", env.NSCALE_API_KEY);
-		logger.info("NSCALE_BASE_URL", env.NSCALE_BASE_URL);
+		logger.info("NODE_ENV", process.env.NODE_ENV);
+		logger.info("TELEGRAM_BOT_TOKEN", process.env.TELEGRAM_BOT_TOKEN);
+		logger.info("NSCALE_API_KEY", process.env.NSCALE_API_KEY);
+		logger.info("NSCALE_BASE_URL", process.env.NSCALE_BASE_URL);
+		logger.info("NSCALE_MODEL", process.env.NSCALE_MODEL);
 		logger.info("Bot is running...");
 		await bot.launch();
 	} catch (error) {
