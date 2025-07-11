@@ -7,7 +7,7 @@ async function correctSentence(sentence, retries = 2, delay = 2000) {
     for (let attempt = 0; attempt <= retries; attempt++) {
         try {
             const response = await openai_client_1.openaiClient.chat.completions.create({
-                model: "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+                model: process.env.NSCALE_MODEL,
                 messages: [
                     {
                         role: "system",
