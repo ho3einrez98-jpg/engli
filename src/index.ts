@@ -1,8 +1,12 @@
+import { env } from "process";
 import { bot } from "./bot";
 import { logger } from "./bot/utils/logger";
 
 async function bootstrap() {
 	try {
+		logger.info("TELEGRAM_BOT_TOKEN", env.TELEGRAM_BOT_TOKEN);
+		logger.info("NSCALE_API_KEY", env.NSCALE_API_KEY);
+		logger.info("NSCALE_BASE_URL", env.NSCALE_BASE_URL);
 		logger.info("Bot is running...");
 		await bot.launch();
 	} catch (error) {
