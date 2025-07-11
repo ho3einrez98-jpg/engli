@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1527349680
+      MYSQL_DATABASE: englifix
+      MYSQL_USER: englifix
+      MYSQL_PASSWORD: 1527349680
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+  bot:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: englifix
+      DB_PASSWORD: 1527349680
+      DB_NAME: englifix
+      TELEGRAM_BOT_TOKEN: 7674964090:AAFXMPa4s_eIOMY2bY362TS6V1B37gjL1i8
+      NSCALE_API_KEY: ns_0da40b38a9f94167b2351b27349d8770
+      NSCALE_BASE_URL: https://inference.api.nscale.com/v1
+      NSCALE_MODEL: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+    volumes:
+      - .:/app
+    command: pnpm start
+volumes:
+  db_data:
