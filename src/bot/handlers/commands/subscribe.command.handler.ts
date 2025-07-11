@@ -3,23 +3,26 @@ import { Update } from "telegraf/typings/core/types/typegram";
 import { userRepo } from "../../../db/repositories";
 
 export const subscribeCommandHandler = async (ctx: Context<Update>) => {
+	// check if user has a valid telegram id
 	const userId = ctx.from?.id;
 	if (!userId) {
 		await ctx.reply("❌ Unable to identify user.");
 		return;
 	}
-	let user = await userRepo.findOne({ where: { telegramId: userId } });
+
+	// find the user and if not found, create a new user
+	let user = await userRepo.findByTelegramId(userId);
 	if (!user) {
-		user = userRepo.create({ telegramId: userId, isPremium: true });
-		await userRepo.save(user);
-		await ctx.reply("🎉 You are now a premium subscriber! Enjoy advanced features.");
-		return;
+		user = await userRepo.createUser(userId);
 	}
+
+	// if user is already premium, inform the user
 	if (user.isPremium) {
 		await ctx.reply("✅ You are already a premium subscriber!");
 		return;
 	}
-	user.isPremium = true;
-	await userRepo.save(user);
+
+	// set the user as premium and inform the user
+	await userRepo.setPremium(userId, true);
 	await ctx.reply("🎉 You are now a premium subscriber! Enjoy advanced features.");
 };
