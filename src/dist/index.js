@@ -5,11 +5,11 @@ const bot_1 = require("./bot");
 const logger_1 = require("./bot/utils/logger");
 async function bootstrap() {
     try {
-        logger_1.logger.info("NODE_ENV", process.env.NODE_ENV);
-        logger_1.logger.info("TELEGRAM_BOT_TOKEN", process.env.TELEGRAM_BOT_TOKEN);
-        logger_1.logger.info("NSCALE_API_KEY", process.env.NSCALE_API_KEY);
-        logger_1.logger.info("NSCALE_BASE_URL", process.env.NSCALE_BASE_URL);
-        logger_1.logger.info("NSCALE_MODEL", process.env.NSCALE_MODEL);
+        console.log("NODE_ENV", process.env.NODE_ENV);
+        console.log("TELEGRAM_BOT_TOKEN", process.env.TELEGRAM_BOT_TOKEN);
+        console.log("NSCALE_API_KEY", process.env.NSCALE_API_KEY);
+        console.log("NSCALE_BASE_URL", process.env.NSCALE_BASE_URL);
+        console.log("NSCALE_MODEL", process.env.NSCALE_MODEL);
         logger_1.logger.info("Bot is running...");
         await bot_1.bot.launch();
     }
