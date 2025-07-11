@@ -2,7 +2,7 @@ import { Context } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
 import { userRepo } from "../../db/repositories";
 
-export const handleUnsubscribe = async (ctx: Context<Update>) => {
+export const unsubscribeUser = async (ctx: Context<Update>) => {
 	// check if user has a valid telegram id
 	const userId = ctx.from?.id;
 	if (!userId) {

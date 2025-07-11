@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
-import { handleSubscribe } from "../../callbacks/subscribe.callback";
+import { subscribeUser } from "../../utils/subscribe-user";
 
 export const subscribeCommandHandler = async (ctx: Context<Update>) => {
-	await handleSubscribe(ctx);
+	await subscribeUser(ctx);
 };

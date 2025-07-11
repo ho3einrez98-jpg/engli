@@ -8,8 +8,6 @@ export const startCommandHandler = async (ctx: Context<Update>) => {
 				[{ text: "Subscribe" }, { text: "Unsubscribe" }],
 				// add more
 			],
-			resize_keyboard: true, // make the keyboard smaller
-			one_time_keyboard: false, // keep the keyboard visible
 		},
 	};
 
