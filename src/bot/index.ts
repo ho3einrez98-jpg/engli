@@ -3,7 +3,6 @@ import { Context, Telegraf } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
 import { startCommandHandler } from "./handlers/commands/start.command.handler";
 import { messageEventHandler } from "./handlers/events/message.event.handler";
-import { callbackQueryEventHandler } from "./handlers/events/callback-query.event.handler";
 import { subscribeCommandHandler } from "./handlers/commands/subscribe.command.handler";
 import { unsubscribeCommandHandler } from "./handlers/commands/unsubscribe.command.handler";
 import { explainCommandHandler } from "./handlers/commands/explain.command.handler";
@@ -25,6 +24,5 @@ bot.command("subscribe", subscribeCommandHandler);
 bot.command("unsubscribe", unsubscribeCommandHandler);
 bot.command("explain", explainCommandHandler);
 bot.on("text", messageEventHandler);
-bot.on("callback_query", callbackQueryEventHandler);
 
 export { bot };
