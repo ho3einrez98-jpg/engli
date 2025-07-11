@@ -1,6 +1,7 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
-import { isSubscribed } from "../../utils/subscription-manager";
+import { AppDataSource } from "../../../db/data-source";
+import { User } from "../../../db/entities/User";
 import { explainCorrection } from "../../utils/correct-sentence";
 
 export const explainCommandHandler = async (ctx: Context<Update>) => {
@@ -9,7 +10,9 @@ export const explainCommandHandler = async (ctx: Context<Update>) => {
 		await ctx.reply("❌ Unable to identify user.");
 		return;
 	}
-	if (!isSubscribed(userId)) {
+	const userRepo = AppDataSource.getRepository(User);
+	const user = await userRepo.findOne({ where: { telegramId: userId } });
+	if (!user || !user.isPremium) {
 		await ctx.reply("🔒 This feature is for premium subscribers only.", {
 			reply_parameters: {
 				chat_id: ctx.chat?.id || 0,
