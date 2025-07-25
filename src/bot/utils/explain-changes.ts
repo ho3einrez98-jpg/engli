@@ -46,7 +46,7 @@ export async function explainChanges(
 				if (content.toLowerCase().startsWith("no correction needed")) {
 					explanation = content;
 				} else {
-					const match = content.match(/^Correction:\s*(.+?)\nExplanation:\s*([\s\S]*)$/i);
+				const match = content.match(/^✅\s*Correction:\s*([\s\S]+?)\n\n🧠\s*Explanation:\s*([\s\S]*)$/i);
 					if (match) {
 						corrected = match[1].trim();
 						explanation = match[2].trim();

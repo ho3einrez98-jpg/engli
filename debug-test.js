@@ -46,9 +46,9 @@ async function testTranslation() {
 async function testExplanation() {
     try {
         console.log('🔍 Testing Explanation Function...');
-        const { explainCorrection } = require('./dist/src/bot/utils/explain-correction');
+        const { explainChanges } = require('./dist/src/bot/utils/explain-changes');
         
-        const result = await explainCorrection('I are going to store');
+        const result = await explainChanges('I are going to store');
         console.log('Explanation result:', result);
         
         if (result.corrected && result.explanation) {
