@@ -123,11 +123,10 @@ export async function explainCorrection(
 							"- Do not add new information or change the intent\n" +
 							"- For informal text, preserve appropriate casualness\n\n" +
 							"Response format:\n" +
-							"If corrections are needed:\n" +
-							"Correction: [corrected text]\n" +
-							"Explanation: [brief explanation of specific changes made]\n\n" +
-							"If no corrections are needed:\n" +
-							"No correction needed. [brief explanation of why the text is already correct]",
+							"Always start with '✅ Correction: ' followed by the corrected text and line break.\n" +
+							"Then add '🧠 Explanation: ' followed by a detailed list of changes made.\n" +
+							"Use bullet points (- ) to list each specific change with clear reasoning.\n" +
+							"If no corrections are needed, output: 'Correction: No correction needed\\nExplanation: The text is already grammatically correct and well-structured.'",
 					},
 					{ role: "user", content: sentence },
 				],
