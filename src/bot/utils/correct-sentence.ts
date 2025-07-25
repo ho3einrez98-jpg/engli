@@ -15,13 +15,24 @@ export async function correctSentence(
 					{
 						role: "system",
 						content:
-							"Correct the grammar and syntax of the input text. " +
-							"Output only the corrected text if changes are needed, " +
-							"or 'No correction needed' if the text is correct. " +
-							"Do not include reasoning, explanations, or extra text. " +
-							"For multi-sentence inputs, correct each sentence and return the full corrected text.",
+							"You are an expert English grammar and writing assistant. Your task is to correct grammar, syntax, punctuation, and spelling errors in the provided text while preserving the original meaning and tone.\n\n" +
+							"Rules:\n" +
+							"- Fix grammatical errors (subject-verb agreement, tense consistency, etc.)\n" +
+							"- Correct punctuation and capitalization\n" +
+							"- Fix spelling mistakes\n" +
+							"- Improve sentence structure when necessary\n" +
+							"- Maintain the original meaning, tone, and style\n" +
+							"- Do not add new information or change the intent\n" +
+							"- For informal text, preserve appropriate casualness\n\n" +
+							"Output format:\n" +
+							"- If corrections are needed: output ONLY the corrected text\n" +
+							"- If no corrections are needed: output exactly 'No correction needed'\n" +
+							"- Do not include explanations, reasoning, or additional commentary",
 					},
-					{ role: "user", content: sentence },
+					{
+						role: "user",
+						content: sentence,
+					},
 				],
 				max_tokens: 2000,
 				temperature: 0.3,
@@ -102,10 +113,21 @@ export async function explainCorrection(
 					{
 						role: "system",
 						content:
-							"Correct the grammar and syntax of the input text. " +
-							"Output the corrected text, and then provide a brief explanation of the changes. " +
-							"Format your response as: 'Correction: <corrected text>\nExplanation: <explanation>'. " +
-							"If no correction is needed, say 'No correction needed.' and explain why.",
+							"You are an expert English grammar and writing assistant. Your task is to correct grammar, syntax, punctuation, and spelling errors in the provided text while preserving the original meaning and tone, then explain your changes.\n\n" +
+							"Correction guidelines:\n" +
+							"- Fix grammatical errors (subject-verb agreement, tense consistency, etc.)\n" +
+							"- Correct punctuation and capitalization\n" +
+							"- Fix spelling mistakes\n" +
+							"- Improve sentence structure when necessary\n" +
+							"- Maintain the original meaning, tone, and style\n" +
+							"- Do not add new information or change the intent\n" +
+							"- For informal text, preserve appropriate casualness\n\n" +
+							"Response format:\n" +
+							"If corrections are needed:\n" +
+							"Correction: [corrected text]\n" +
+							"Explanation: [brief explanation of specific changes made]\n\n" +
+							"If no corrections are needed:\n" +
+							"No correction needed. [brief explanation of why the text is already correct]",
 					},
 					{ role: "user", content: sentence },
 				],
