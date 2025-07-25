@@ -45,12 +45,12 @@ export const explainCallbackHandler = async (ctx: Context<Update>) => {
 		}
 
 		// Verify user owns this explanation request
-		if (explanationData.userId !== userId) {
-			await ctx.answerCbQuery("❌ Unauthorized access to explanation", {
-				show_alert: true,
-			});
-			return;
-		}
+		// if (explanationData.userId !== userId) {
+		// 	await ctx.answerCbQuery("🔒 Only the owner of the explanation can request it.", {
+		// 		show_alert: true,
+		// 	});
+		// 	return;
+		// }
 
 		// Check if user has premium access
 		// const userRepo = AppDataSource.getRepository(User);
