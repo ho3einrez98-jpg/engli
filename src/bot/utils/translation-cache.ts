@@ -27,17 +27,17 @@ class TranslationCache {
 		});
 
 		logger.info(`Stored translation data with ID: ${id}`);
-		
+
 		// Clean up expired entries
 		this.cleanup();
-		
+
 		return id;
 	}
 
 	// Retrieve translation data by ID
 	get(id: string): TranslationData | null {
 		const data = this.cache.get(id);
-		
+
 		if (!data) {
 			return null;
 		}

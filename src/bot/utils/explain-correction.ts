@@ -1,12 +1,17 @@
-import { CorrectionResponse } from "../interfaces";
 import { logger } from "./logger";
 import { openaiClient } from "./openai-client";
 
-export async function correctSentence(
+export async function explainCorrection(
 	sentence: string,
 	retries: number = 2,
 	delay: number = 2000
-): Promise<CorrectionResponse> {
+): Promise<{
+	corrected?: string;
+	explanation?: string;
+	promptTokens: number;
+	completionTokens: number;
+	totalTokens: number;
+}> {
 	for (let attempt = 0; attempt <= retries; attempt++) {
 		try {
 			const response = await openaiClient.chat.completions.create({
@@ -15,8 +20,8 @@ export async function correctSentence(
 					{
 						role: "system",
 						content:
-							"You are an expert English grammar and writing assistant. Your task is to correct grammar, syntax, punctuation, and spelling errors in the provided text while preserving the original meaning and tone.\n\n" +
-							"Rules:\n" +
+							"You are an expert English grammar and writing assistant. Your task is to correct grammar, syntax, punctuation, and spelling errors in the provided text while preserving the original meaning and tone, then explain your changes.\n\n" +
+							"Correction guidelines:\n" +
 							"- Fix grammatical errors (subject-verb agreement, tense consistency, etc.)\n" +
 							"- Correct punctuation and capitalization\n" +
 							"- Fix spelling mistakes\n" +
@@ -24,44 +29,38 @@ export async function correctSentence(
 							"- Maintain the original meaning, tone, and style\n" +
 							"- Do not add new information or change the intent\n" +
 							"- For informal text, preserve appropriate casualness\n\n" +
-							"Output format:\n" +
-							"- If corrections are needed: output ONLY the corrected text\n" +
-							"- If no corrections are needed: output exactly 'No correction needed'\n" +
-							"- Do not include explanations, reasoning, or additional commentary",
+							"Response format:\n" +
+							"Always start with '✅ Correction: ' followed by the corrected text and line break.\n" +
+							"Then add '🧠 Explanation: ' followed by a detailed list of changes made.\n" +
+							"Use bullet points (- ) to list each specific change with clear reasoning.\n" +
+							"If no corrections are needed, output: 'Correction: No correction needed\\nExplanation: The text is already grammatically correct and well-structured.'",
 					},
-					{
-						role: "user",
-						content: sentence,
-					},
+					{ role: "user", content: sentence },
 				],
 				max_tokens: 2000,
 				temperature: 0.3,
 			});
-
 			const content = response.choices[0]?.message.content?.trim();
+			const usage = response.usage;
 			if (content) {
-				const usage = response.usage;
-				logger.info(
-					`Input: ${sentence} | Response: ${content} | Tokens: prompt=${usage?.prompt_tokens}, completion=${usage?.completion_tokens}, total=${usage?.total_tokens}`
-				);
-				if (
-					content.toLowerCase() !== sentence.toLowerCase() &&
-					![
-						"no correction needed",
-						"no corrections needed",
-						"no change needed",
-						"no changes needed",
-						"",
-					].includes(content.toLowerCase())
-				) {
-					return {
-						corrected: content,
-						promptTokens: usage?.prompt_tokens || 0,
-						completionTokens: usage?.completion_tokens || 0,
-						totalTokens: usage?.total_tokens || 0,
-					};
+				let corrected, explanation;
+				if (content.toLowerCase().startsWith("no correction needed")) {
+					explanation = content;
+				} else {
+					const match = content.match(/^Correction:\s*(.+?)\nExplanation:\s*([\s\S]*)$/i);
+					if (match) {
+						corrected = match[1].trim();
+						explanation = match[2].trim();
+					} else {
+						corrected = content;
+					}
 				}
+				logger.info(
+					`Input: ${sentence} | Correction: ${corrected} | Explanation: ${explanation} | Tokens: prompt=${usage?.prompt_tokens}, completion=${usage?.completion_tokens}, total=${usage?.total_tokens}`
+				);
 				return {
+					corrected,
+					explanation,
 					promptTokens: usage?.prompt_tokens || 0,
 					completionTokens: usage?.completion_tokens || 0,
 					totalTokens: usage?.total_tokens || 0,
