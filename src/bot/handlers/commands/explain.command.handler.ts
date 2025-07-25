@@ -36,11 +36,8 @@ export const explainCommandHandler = async (ctx: Context<Update>) => {
 		},
 	});
 	const result = await explainCorrection(input);
-	if (result.corrected || result.explanation) {
-		let reply = "";
-		if (result.corrected) reply += `✅ Correction: ${result.corrected}\n`;
-		if (result.explanation) reply += `💡 Explanation: ${result.explanation}`;
-		await ctx.reply(reply, {
+	if (result.corrected) {
+		await ctx.reply(result.corrected || "", {
 			reply_parameters: {
 				chat_id: ctx.chat?.id || 0,
 				message_id: ctx.message?.message_id || 0,
