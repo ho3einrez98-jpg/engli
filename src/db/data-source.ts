@@ -2,6 +2,8 @@ import { DataSource } from "typeorm";
 import { User } from "./entities/User";
 import { Plan } from "./entities/Plan";
 import { Invoice } from "./entities/Invoice";
+import { DailyQuestion } from "./entities/DailyQuestion";
+import { DailyQuestionGroup } from "./entities/DailyQuestionGroup";
 
 const AppDataSource = new DataSource({
 	type: "mysql",
@@ -12,7 +14,7 @@ const AppDataSource = new DataSource({
 	database: process.env.DB_NAME,
 	synchronize: true,
 	logging: false,
-	entities: [User, Plan, Invoice],
+	entities: [User, Plan, Invoice, DailyQuestion, DailyQuestionGroup],
 });
 
 AppDataSource.initialize()

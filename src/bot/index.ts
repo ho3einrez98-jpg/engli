@@ -7,6 +7,13 @@ import { subscribeCommandHandler } from "./handlers/commands/subscribe.command.h
 import { unsubscribeCommandHandler } from "./handlers/commands/unsubscribe.command.handler";
 import { translateCallbackHandler } from "./handlers/callbacks/translate.callback.handler";
 import { explainCallbackHandler } from "./handlers/callbacks/explain.callback.handler";
+import { dailyQuestionCommandHandler } from "./handlers/commands/daily-question.command.handler";
+import { 
+	disableQuestionsCommandHandler,
+	questionStatsCommandHandler,
+	manualQuestionCommandHandler,
+	themedQuestionCommandHandler
+} from "./handlers/commands/question-management.command.handler";
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -23,6 +30,11 @@ const bot = new Telegraf<Context<Update>>(TOKEN);
 bot.command("start", startCommandHandler);
 bot.command("subscribe", subscribeCommandHandler);
 bot.command("unsubscribe", unsubscribeCommandHandler);
+bot.command("daily_questions", dailyQuestionCommandHandler);
+bot.command("disable_questions", disableQuestionsCommandHandler);
+bot.command("question_stats", questionStatsCommandHandler);
+bot.command("manual_question", manualQuestionCommandHandler);
+bot.command("themed_question", themedQuestionCommandHandler);
 bot.action(/^translate:/, translateCallbackHandler);
 bot.action(/^explain:/, explainCallbackHandler);
 bot.on("text", messageEventHandler);

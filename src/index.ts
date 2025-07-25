@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { bot } from "./bot";
 import { logger } from "./bot/utils/logger";
+// Initialize daily question cron job
+import "./bot/daily-question-cron";
 
 async function bootstrap() {
 	try {
