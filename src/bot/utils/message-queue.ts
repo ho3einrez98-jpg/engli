@@ -3,6 +3,7 @@ import { correctSentence } from "./correct-sentence";
 import { logger } from "./logger";
 import { MessageQueueItem } from "../interfaces/message-queue-item.interface";
 import { translationCache } from "./translation-cache";
+import { explanationCache } from "./explanation-cache";
 
 export const messageQueue = queue<MessageQueueItem>(
 	async (item: MessageQueueItem, callback: () => void) => {
@@ -11,7 +12,12 @@ export const messageQueue = queue<MessageQueueItem>(
 		if (corrected) {
 			// Store translation data in cache and get short ID
 			const translationId = translationCache.store(item.text, corrected);
-			const callbackData = `translate:${translationId}`;
+			const translateCallbackData = `translate:${translationId}`;
+
+			// Store explanation data in cache and get short ID
+			const userId = item.ctx.from?.id || 0;
+			const explanationId = explanationCache.store(item.text, userId);
+			const explainCallbackData = `explain:${explanationId}`;
 
 			await item.ctx.reply(`✅ ${corrected}`, {
 				reply_parameters: {
@@ -23,7 +29,11 @@ export const messageQueue = queue<MessageQueueItem>(
 						[
 							{
 								text: "🇮🇷 Translate to Persian",
-								callback_data: callbackData,
+								callback_data: translateCallbackData,
+							},
+							{
+								text: "🧠 Explain Changes",
+								callback_data: explainCallbackData,
 							},
 						],
 					],
