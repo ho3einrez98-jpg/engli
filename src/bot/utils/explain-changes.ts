@@ -1,7 +1,7 @@
 import { logger } from "./logger";
 import { openaiClient } from "./openai-client";
 
-export async function explainCorrection(
+export async function explainChanges(
 	sentence: string,
 	retries: number = 2,
 	delay: number = 2000
@@ -29,10 +29,9 @@ export async function explainCorrection(
 							"- Maintain the original meaning, tone, and style\n" +
 							"- Do not add new information or change the intent\n" +
 							"- For informal text, preserve appropriate casualness\n\n" +
-							"Response format:\n" +
-							"Always start with '✅ Correction: ' followed by the corrected text and line break.\n" +
-							"Then add '🧠 Explanation: ' followed by a detailed list of changes made.\n" +
-							"Use bullet points (- ) to list each specific change with clear reasoning.\n" +
+							"Response format (Markdown):\n" +
+							"Return a single Markdown block that includes both the correction and the explanation, formatted as follows:\n" +
+							"✅ Correction:  \n<corrected sentence>  \n\n🧠 Explanation:  \n- <bullet point explanation 1>  \n- <bullet point explanation 2>  \n- ...\n" +
 							"If no corrections are needed, output: 'Correction: No correction needed\\nExplanation: The text is already grammatically correct and well-structured.'",
 					},
 					{ role: "user", content: sentence },

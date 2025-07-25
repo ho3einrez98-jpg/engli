@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
-import { explainCorrection } from "../../utils/explain-correction";
+import { explainChanges } from "../../utils/explain-changes";
 import { explanationCache } from "../../utils/explanation-cache";
 import { logger } from "../../utils/logger";
 
@@ -52,7 +52,8 @@ export const explainCallbackHandler = async (ctx: Context<Update>) => {
 		// 	return;
 		// }
 
-		// Check if user has premium access
+		// For now, allow all users to use explain feature
+		// TODO: Implement premium check when user system is ready
 		// const userRepo = AppDataSource.getRepository(User);
 		// const user = await userRepo.findOne({ where: { telegramId: userId } });
 		// if (!user || !user.isPremium) {
@@ -72,7 +73,7 @@ export const explainCallbackHandler = async (ctx: Context<Update>) => {
 		let explanation = explanationData.explanation;
 
 		if (!correctedText || !explanation) {
-			const result = await explainCorrection(originalText);
+			const result = await explainChanges(originalText);
 			correctedText = result.corrected;
 			explanation = result.explanation;
 
