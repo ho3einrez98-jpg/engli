@@ -6,6 +6,7 @@ import { messageEventHandler } from "./handlers/events/message.event.handler";
 import { subscribeCommandHandler } from "./handlers/commands/subscribe.command.handler";
 import { unsubscribeCommandHandler } from "./handlers/commands/unsubscribe.command.handler";
 import { explainCommandHandler } from "./handlers/commands/explain.command.handler";
+import { translateCallbackHandler } from "./handlers/callbacks/translate.callback.handler";
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -23,6 +24,7 @@ bot.command("start", startCommandHandler);
 bot.command("subscribe", subscribeCommandHandler);
 bot.command("unsubscribe", unsubscribeCommandHandler);
 bot.command("explain", explainCommandHandler);
+bot.action(/^translate:/, translateCallbackHandler);
 bot.on("text", messageEventHandler);
 
 export { bot };
