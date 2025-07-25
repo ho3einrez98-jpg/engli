@@ -13,7 +13,7 @@ export const translateCallbackHandler = async (ctx: Context<Update>) => {
 		}
 
 		const callbackData = ctx.callbackQuery.data;
-		
+
 		// Extract the text to translate from callback data
 		// Format: "translate:translation_id"
 		if (!callbackData.startsWith("translate:")) {
@@ -31,7 +31,10 @@ export const translateCallbackHandler = async (ctx: Context<Update>) => {
 		const translationData = translationCache.get(translationId);
 
 		if (!translationData) {
-			await ctx.answerCbQuery("❌ Translation data expired. Please request correction again.", { show_alert: true });
+			await ctx.answerCbQuery(
+				"❌ Translation data expired. Please request correction again.",
+				{ show_alert: true }
+			);
 			return;
 		}
 
@@ -44,7 +47,9 @@ export const translateCallbackHandler = async (ctx: Context<Update>) => {
 		const { translation } = await translateToPersian(correctedText);
 
 		if (!translation) {
-			await ctx.answerCbQuery("❌ Translation failed. Please try again.", { show_alert: true });
+			await ctx.answerCbQuery("❌ Translation failed. Please try again.", {
+				show_alert: true,
+			});
 			return;
 		}
 
@@ -56,15 +61,16 @@ export const translateCallbackHandler = async (ctx: Context<Update>) => {
 		}
 
 		// Create the new message content with original, corrected, and Persian translation
-		const newMessageText = `✅ ${correctedText}\n\n🇮🇷 Persian: ${translation}`;
+		const newMessageText = `✅ ${correctedText}\n\n ${translation}`;
 
 		// Edit the original message
 		await ctx.editMessageText(newMessageText, {
-			parse_mode: "HTML"
+			parse_mode: "HTML",
 		});
 
-		logger.info(`Translation completed - Original: ${originalText} | Corrected: ${correctedText} | Persian: ${translation}`);
-
+		logger.info(
+			`Translation completed - Original: ${originalText} | Corrected: ${correctedText} | Persian: ${translation}`
+		);
 	} catch (error) {
 		logger.error(`Translation callback error: ${error}`);
 		try {
