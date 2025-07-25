@@ -8,12 +8,13 @@ import { unsubscribeCommandHandler } from "./handlers/commands/unsubscribe.comma
 import { translateCallbackHandler } from "./handlers/callbacks/translate.callback.handler";
 import { explainCallbackHandler } from "./handlers/callbacks/explain.callback.handler";
 import { dailyQuestionCommandHandler } from "./handlers/commands/daily-question.command.handler";
-import { 
+import {
 	disableQuestionsCommandHandler,
 	questionStatsCommandHandler,
 	manualQuestionCommandHandler,
-	themedQuestionCommandHandler
+	themedQuestionCommandHandler,
 } from "./handlers/commands/question-management.command.handler";
+import { initializeDailyQuestionService } from "./daily-question-cron";
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -23,18 +24,24 @@ if (!TOKEN || TOKEN.includes("YOUR_TELEGRAM_BOT_TOKEN")) {
 
 const bot = new Telegraf<Context<Update>>(TOKEN);
 
+// Initialize daily question service with bot instance
+initializeDailyQuestionService(bot);
+
 // ============================
 // Register Handlers
 // ============================
 
 bot.command("start", startCommandHandler);
+
 bot.command("subscribe", subscribeCommandHandler);
 bot.command("unsubscribe", unsubscribeCommandHandler);
+
 bot.command("daily_questions", dailyQuestionCommandHandler);
 bot.command("disable_questions", disableQuestionsCommandHandler);
 bot.command("question_stats", questionStatsCommandHandler);
 bot.command("manual_question", manualQuestionCommandHandler);
 bot.command("themed_question", themedQuestionCommandHandler);
+
 bot.action(/^translate:/, translateCallbackHandler);
 bot.action(/^explain:/, explainCallbackHandler);
 bot.on("text", messageEventHandler);

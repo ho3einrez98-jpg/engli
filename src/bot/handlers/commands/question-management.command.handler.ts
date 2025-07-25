@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { logger } from '../../utils/logger';
-import { dailyQuestionService } from '../../daily-question-cron';
+import { getDailyQuestionService } from '../../daily-question-cron';
 
 export async function disableQuestionsCommandHandler(ctx: Context<Update>) {
     try {
@@ -17,7 +17,7 @@ export async function disableQuestionsCommandHandler(ctx: Context<Update>) {
         }
 
         const chatId = ctx.chat!.id.toString();
-        await dailyQuestionService.unregisterGroup(chatId);
+        await getDailyQuestionService().unregisterGroup(chatId);
 
         await ctx.reply('✅ Daily questions have been disabled for this group. You can enable them again anytime with /daily_questions');
         logger.info(`Daily questions disabled for group ${chatId}`);
@@ -36,7 +36,7 @@ export async function questionStatsCommandHandler(ctx: Context<Update>) {
         }
 
         const chatId = ctx.chat!.id.toString();
-        const stats = await dailyQuestionService.getGroupStats(chatId);
+        const stats = await getDailyQuestionService().getGroupStats(chatId);
 
         if (!stats.isRegistered) {
             await ctx.reply('📊 This group is not registered for daily questions. Use /daily_questions to enable them!');
@@ -81,7 +81,7 @@ export async function manualQuestionCommandHandler(ctx: Context<Update>) {
         const chatId = ctx.chat!.id.toString();
         await ctx.reply('🎲 Generating a fresh question for your group...');
 
-        await dailyQuestionService.sendManualQuestion(chatId);
+        await getDailyQuestionService().sendManualQuestion(chatId);
         
         logger.info(`Manual question sent to group ${chatId}`);
 
@@ -135,7 +135,7 @@ export async function themedQuestionCommandHandler(ctx: Context<Update>) {
         const chatId = ctx.chat!.id.toString();
         await ctx.reply(`🎨 Generating a ${theme.replace('-', ' ')} question...`);
 
-        await dailyQuestionService.sendThemedQuestion(chatId, theme);
+        await getDailyQuestionService().sendThemedQuestion(chatId, theme);
         
         logger.info(`Themed question (${theme}) sent to group ${chatId}`);
 
