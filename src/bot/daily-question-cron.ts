@@ -7,20 +7,22 @@ let dailyQuestionService: DailyQuestionService | null = null;
 
 // Initialize the service when bot is available
 export function initializeDailyQuestionService(bot: Telegraf) {
-    dailyQuestionService = new DailyQuestionService(bot);
+	dailyQuestionService = new DailyQuestionService(bot);
 }
 
 // Getter function to access the service
 export function getDailyQuestionService(): DailyQuestionService {
-    if (!dailyQuestionService) {
-        throw new Error('Daily question service not initialized. Call initializeDailyQuestionService first.');
-    }
-    return dailyQuestionService;
+	if (!dailyQuestionService) {
+		throw new Error(
+			"Daily question service not initialized. Call initializeDailyQuestionService first."
+		);
+	}
+	return dailyQuestionService;
 }
 
-// Run the cron job at 9:00 AM UTC every day
+// Run the cron job at 7:00 PM UTC every day
 cron.schedule(
-	"0 9 * * *",
+	"0 19 * * *",
 	async () => {
 		try {
 			logger.info("Starting daily question cron job");
